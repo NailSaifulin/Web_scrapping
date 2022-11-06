@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 import fake_useragent
 import re
 
-HUBS = [
-    "очередным"
+words = [
+    "что"
     ]
 
 ua =fake_useragent.UserAgent()
@@ -18,11 +18,11 @@ text = response.text
 soup = BeautifulSoup(text, features="html.parser")
 articles = soup.find_all("article")
 for article in articles:
-    hubs = article.find_all("p")
-    hubs = [hub.text.lower() for hub in hubs]
-    hub = re.findall(r'\w+', str(hubs))
-    for hb in HUBS:
-       if hb.lower() in hub:
+    preview = article.find_all("p")
+    preview = [hub.text.lower() for hub in preview]
+    preview_edit = re.findall(r'\w+', str(preview))
+    for wd in words:
+       if wd.lower() in preview_edit:
             href = article.find(class_="tm-article-snippet__title-link").attrs["href"]
             full_href = f"https://habr.com{href}"
             title = article.find("h2").find("span").text
